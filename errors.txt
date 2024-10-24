@@ -1,0 +1,152 @@
+Creating changablle slides, tried going from one slide to anohter
+Traceback (most recent call last):
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\MainController.py", line 35, in <module>
+    exit_val = room.run()
+               ^^^^^^^^^^
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\GameFrame\Level.py", line 125, in run
+    obj.key_pressed(keys)
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\Objects\Slide.py", line 23, in key_pressed
+    self.room.delete_object(self.slides[self.current_slide-1])
+                            ^^^^^^^^^^^
+AttributeError: 'Slide' object has no attribute 'slides'
+
+Tested button, it works perfectly
+
+
+
+Setting background with self.backround_image = instead of the actual setting one
+Traceback (most recent call last):
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\MainController.py", line 34, in <module>
+    room = class_name(screen, joysticks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\Rooms\TutorialRoom.py", line 27, in __init__
+    self.background_image('background.png')
+TypeError: 'int' object is not callable
+
+Globals.next_level = Globals.rooms.index('TutorialRoom')
+        self.running = False
+
+Traceback (most recent call last):
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\MainController.py", line 35, in <module>
+    exit_val = room.run()
+               ^^^^^^^^^^
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\GameFrame\Level.py", line 90, in run
+    obj.clicked(event.button)
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\Objects\Button.py", line 19, in clicked
+    self.function()
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\Rooms\Menu.py", line 11, in start_room
+    self.room.running = False
+    ^^^^^^^^^
+AttributeError: 'Menu' object has no attribute 'room'
+PS C:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame> & "c:/Users/SamNi/OneDrive - Moreton Bay Colleges/Y9/Digital Soultions/GameFrame/.venv/Scripts/python.exe" "c:/Users/SamNi/OneDrive - Moreton Bay Colleges/Y9/Digital Soultions/GameFrame/MainController.py"
+pygame 2.6.1 (SDL 2.28.4, Python 3.11.5)
+Hello from the pygame community. https://www.pygame.org/contribute.html
+space pressed - 1
+space pressed - 2
+Traceback (most recent call last):
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\MainController.py", line 29, in <module>
+    Globals.next_level += 1
+TypeError: unsupported operand type(s) for +=: 'type' and 'int'
+PS C:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame> & "c:/Users/SamNi/OneDrive - Moreton Bay Colleges/Y9/Digital Soultions/GameFrame/.venv/Scripts/python.exe" "c:/Users/SamNi/OneDrive - Moreton Bay Colleges/Y9/Digital Soultions/GameFrame/MainController.py"
+pygame 2.6.1 (SDL 2.28.4, Python 3.11.5)
+Hello from the pygame community. https://www.pygame.org/contribute.html
+space pressed - 1
+space pressed - 2
+space pressed - 1
+space pressed - 2
+PS C:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame> & "c:/Users/SamNi/OneDrive - Moreton Bay Colleges/Y9/Digital Soultions/GameFrame/.venv/Scripts/python.exe" "c:/Users/SamNi/OneDrive - Moreton Bay Colleges/Y9/Digital Soultions/GameFrame/MainController.py"
+pygame 2.6.1 (SDL 2.28.4, Python 3.11.5)
+Hello from the pygame community. https://www.pygame.org/contribute.html
+space pressed - 1
+space pressed - 2
+Traceback (most recent call last):
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\MainController.py", line 35, in <module>
+    exit_val = room.run()
+               ^^^^^^^^^^
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\GameFrame\Level.py", line 90, in run
+    obj.clicked(event.button)
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\Objects\Button.py", line 19, in clicked
+    self.function()
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\Rooms\Menu.py", line 10, in start_room
+    Globals.next_level = Globals.rooms.index('TutorialRoom')
+                         ^^^^^^^^^^^^^
+AttributeError: type object 'Globals' has no attribute 'rooms'
+
+
+Globals.next_level = Globals.levels.index('TutorialRoom')
+        self.running = False
+
+works
+
+ship movement
+
+Traceback (most recent call last):
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\MainController.py", line 35, in <module>
+    exit_val = room.run()
+               ^^^^^^^^^^
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\GameFrame\Level.py", line 125, in run
+    obj.key_pressed(keys)
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\Objects\Ship.py", line 15, in key_pressed
+    self.move(0, -self.speed)
+    ^^^^^^^^^
+AttributeError: 'Ship' object has no attribute 'move'
+
+only moves up and down not in the direction facing
+
+moves 90 degrees in a different direction than what was presed
+
+functional
+
+
+spiny ship
+movement good
+
+time to spin
+works
+
+test for space presses
+works
+
+cooldown
+Traceback (most recent call last):
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\MainController.py", line 35, in <module>
+    exit_val = room.run()
+               ^^^^^^^^^^
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\GameFrame\Level.py", line 72, in run
+    self.process_user_events()
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\GameFrame\Level.py", line 250, in process_user_events
+    event()
+TypeError: 'bool' object is not callabl
+
+cooldown attempt two
+good
+
+collision attempt one
+Traceback (most recent call last):
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\MainController.py", line 35, in <module>
+    exit_val = room.run()
+               ^^^^^^^^^^
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\GameFrame\Level.py", line 157, in run
+    item.check_collisions()
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\GameFrame\RoomObject.py", line 72, in check_collisions
+    self.handle_collision(item, item_type)
+  File "c:\Users\SamNi\OneDrive - Moreton Bay Colleges\Y9\Digital Soultions\GameFrame\Objects\Smash.py", line 31, in handle_collision
+    self.room.remove_room_object(self)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Game' object has no attribute 'remove_room_object'. Did you mean: 'add_room_object'?
+occured when ships contacted
+
+collision attempt two
+good
+
+rewrote smash so it uses the enemy base script
+no module named Enemy_Base
+
+changed to use from Objects.Enemy_Base import Enemy_Base rather than from Enemy_Base import Enemy_Base
+missing 1 required position argument: 'health"
+
+added the new argument
+works
+
+added laser
+works - i am a god among men

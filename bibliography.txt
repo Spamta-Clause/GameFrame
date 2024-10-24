@@ -1,0 +1,3 @@
+https://www.geeksforgeeks.org/how-to-create-buttons-in-a-game-using-pygame/
+https://www.pygame.org/docs/ref/mouse.html
+https://gameframeforpygame.wordpress.com/docs/

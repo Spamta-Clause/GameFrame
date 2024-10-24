@@ -4,20 +4,16 @@ class Globals:
     running = True
     FRAMES_PER_SECOND = 30
 
-    SCREEN_WIDTH = 800
-    SCREEN_HEIGHT = 600
-
-    SCORE = 0
-
-    # - Set the starting number of lives - #
-    LIVES = 3
+    SCREEN_WIDTH = 1280
+    SCREEN_HEIGHT = 720
 
     # - Set the Window display name - #
-    window_name = 'GF Game'
+    window_name = 'Galactic Oil Harvesters'
 
     # - Set the order of the rooms - #
-    levels = ["WelcomeScreen", "Maze", "ScrollingShooter", "BreakOut"]
+    levels = ["TutorialRoom","Menu","Game"]
 
+    LIVES = 0
     # - Set the starting level - #
     start_level = 0
 
@@ -36,5 +32,7 @@ class Globals:
 # ###### User Defined Global Variables below this line ######## #
 # ############################################################# #
 
-    total_count = 0
-    destroyed_count = 0
+    speed = 5
+    laser = 1
+    armour = 3
+    drill = 1

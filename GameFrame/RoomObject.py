@@ -215,3 +215,4 @@ class RoomObject:
 
         self.curr_rotation = 0
         self.rotate(int(angle))
+        return int(angle)
