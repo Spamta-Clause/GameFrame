@@ -11,8 +11,8 @@ class Slide(Title):
         
         # set values         
         self.size = 60
-        self.font = 'Neon Future 2.0 Demo'
-        self.colour = (255,255,255)
+        self.font = 'Flux Boxes'
+        self.colour = (255,255,255,255)
         self.bold = False
         self.update_text()
         

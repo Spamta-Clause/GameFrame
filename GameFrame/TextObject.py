@@ -1,10 +1,9 @@
 import pygame
 from GameFrame import RoomObject, Level
 
-
 class TextObject(RoomObject):
     def __init__(self, room: Level, x: int, y: int, text='Not Set', size=60,
-                 font='Comic Sans MS', colour=(0, 0, 0), bold=False):
+                 font='Comic Sans MS', colour=(0, 0, 0, 255), bold=False):
         RoomObject.__init__(self, room, x, y)
 
         self.rendered_text = 0
@@ -19,7 +18,9 @@ class TextObject(RoomObject):
 
     def update_text(self):
         self.built_font = pygame.font.SysFont(self.font, self.size, self.bold)
-        self.rendered_text = self.built_font.render(self.text, False, self.colour)
-        self.image = self.rendered_text
+        r, g, b, a = self.colour
+        self.rendered_text = self.built_font.render(self.text, True, (r, g, b))
+        self.image = self.rendered_text.convert_alpha()
+        self.image.set_alpha(a)
         self.width, self.height = self.built_font.size(self.text)
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)

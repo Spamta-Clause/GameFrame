@@ -5,10 +5,10 @@ from Rooms.TutorialRoom import TutorialRoom
 import pygame
 
 class Menu(Level):
-    def start_room(self):
-        #ok so, we find the index of the start room, we set that as the next room, then boom, we're done
-        Globals.next_level = Globals.levels.index('TutorialRoom')
+    def gamble_room(self):
+        Globals.next_level = Globals.levels.index('Gambling')
         self.running = False
+
     
     def game_room(self):
         Globals.next_level = Globals.levels.index('Game')
@@ -19,5 +19,11 @@ class Menu(Level):
         Level.__init__(self, screen, joysticks)
 
         self.add_room_object(Button(self, 100, 100, 'play_button.png', 256, 128,self.game_room))
+        self.add_room_object(Button(self, 100, 300, 'gamble_button.png', 138*2, 48*2,self.gamble_room))
         self.set_background_image('background.png')
+        self.add_room_object(Button(self, 100, 500, 'back.png', 256, 128, self.upgrade_room))
+    
+    def upgrade_room(self):
+        Globals.next_level = Globals.levels.index('UpgradeRoom')
+        self.running = False
 

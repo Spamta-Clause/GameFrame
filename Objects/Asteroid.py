@@ -1,30 +1,42 @@
 from GameFrame import RoomObject, Globals
 import random
+from Objects.Fading_Text import Fading_Text
 
 class Asteroid(RoomObject):
     """
     A class for Zorks danerous obstacles
     """
     
-    def __init__(self, room, x, y,speed, health):
+    def __init__(self, room, x, y,speed,):
         """
         Initialise the Asteroid object
         """
         # include attributes and methods from RoomObject
         RoomObject.__init__(self,room, x, y)
         
-        # set image
-        image = self.load_image("play_button.png")
-        self.set_image(image,20,20)
-        
         # set travel direction
         angle = random.randint(135,225)
         self.set_direction(angle, speed)
-
-        self.health = health
         self.can_take_damage = True
 
         self.register_collision_object("Ship")
+
+        self.type_num = random.randint(1,10)
+        if self.type_num == 10:
+            self.type = "Diamond"
+            self.health = 10
+        elif self.type_num >= 7:
+            self.type = "Gold"
+            self.health = 7
+        elif self.type_num >= 4:
+            self.type = "Emerald"
+            self.health = 4
+        else:
+            self.type = "Ruby"
+            self.health = 1
+        image = self.load_image(f"{self.type.lower()}_Asteroid.png")
+        self.set_image(image,20,20)
+            
         
     def step(self):
         """
@@ -36,7 +48,7 @@ class Asteroid(RoomObject):
     def handle_collision(self, other, other_type):
         if other_type == "Ship" and other.is_drilling and self.can_take_damage:
             print("getting drilled")
-            self.damage(1)
+            self.damage(other.drill_damage)
 
 
     def keep_in_room(self):
@@ -51,11 +63,27 @@ class Asteroid(RoomObject):
             self.y_speed *= -1
     
     def damage(self,damage):
-        self.health -= 1
+        self.health -= damage
         self.can_take_damage = False
         self.set_timer(5, self.reset_damage)
         if self.health <= 0:
+            match self.type:
+                case "Diamond":
+                    Globals.diamond_oil += 2
+                case "Gold":
+                    Globals.gold_oil += 2
+                case "Emerald":
+                    Globals.emerald_oil += 2
+                case "Ruby":
+                    Globals.ruby_oil += 2
+                #now we want to show a little text box that will fade saying how much oil was collected
+            plus_oil_text = Fading_Text(self.room, self.x, self.y, f"+2 {self.type} Oil", 30, (255,255,255,255))
+            plus_oil_text.x = self.x - plus_oil_text.width/2
+            plus_oil_text.y = self.y - plus_oil_text.height/2
+            self.room.add_room_object(plus_oil_text)
+            print(Globals.diamond_oil, Globals.gold_oil, Globals.emerald_oil, Globals.ruby_oil)
             self.room.delete_object(self)
+
 
     def reset_damage(self):
         self.can_take_damage = True
@@ -66,5 +94,4 @@ class Asteroid(RoomObject):
         removes asteroid that have exited the room
         """
         if self.x + self.width < 0:
-            print("asteroid left")
             self.room.delete_object(self)

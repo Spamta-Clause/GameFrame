@@ -9,3 +9,9 @@ from Objects.Laser_Cruiser import Laser_Cruiser
 from Objects.Unstable import Unstable
 from Objects.Ship_Cruiser import Ship_Cruiser
 from Objects.Asteroid import Asteroid
+from Objects.Wave import Wave
+from Objects.Fading_Text import Fading_Text
+from Objects.Roulette_Manager import Roulette_Manager
+from Objects.Text import Default
+from Objects.Selector import Selector
+from Objects.Heart import Heart

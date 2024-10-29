@@ -2,7 +2,7 @@ from GameFrame import RoomObject, Globals
 import math
 
 class Enemy_Base(RoomObject):
-    def __init__(self, room, x, y, image, width, height, speed, target, health, too_close_for_comfort = -100, wave = None):
+    def __init__(self, room, x, y, image, width, height, speed, target, health, too_close_for_comfort = False, wave = None):
         RoomObject.__init__(self, room, x, y)
        
         self.image = self.load_image(image)
@@ -27,12 +27,13 @@ class Enemy_Base(RoomObject):
         dy = target_y - y
         self.angle = (math.atan2(dy, dx) * 180 / math.pi)%360
         #finds distance, checks if within social distancing requirements
-        
-        if abs(math.sqrt(dx**2 + dy**2)) < self.too_close_for_comfort:
-            self.set_direction(self.angle, -self.speed)
-            #should back away
-        elif abs(math.sqrt(dx**2 + dy**2)) < self.too_close_for_comfort+100:
-            self.set_direction(self.angle, 0)
+
+        if self.too_close_for_comfort == True:
+            if abs(math.sqrt(dx**2 + dy**2)) < self.too_close_for_comfort:
+                self.set_direction(self.angle, -self.speed)
+                #should back away
+            elif abs(math.sqrt(dx**2 + dy**2)) < self.too_close_for_comfort+100:
+                self.set_direction(self.angle, 0)
         else:
             self.set_direction(self.angle, self.speed)
 

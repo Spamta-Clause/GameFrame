@@ -8,6 +8,7 @@ class Wave(RoomObject):
         self.interval = interval
         self.room = room
         self.index = 0
+        self.enemies_slain = 0
 
     def spawn_next(self):
         self.room.add_room_object(self.total_enemies[self.index])
@@ -18,7 +19,7 @@ class Wave(RoomObject):
 
     def enemy_dead(self, enemy):
         print(self.enemies)
-        self.enemies.remove(enemy)
+        self.enemies_slain += 1
 
-        if len(self.enemies) == 0 or self.enemies == None:
+        if len(self.total_enemies) == self.enemies_slain:
             print('wave killed')

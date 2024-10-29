@@ -11,7 +11,7 @@ class Globals:
     window_name = 'Galactic Oil Harvesters'
 
     # - Set the order of the rooms - #
-    levels = ["TutorialRoom","Menu","Game"]
+    levels = ["UpgradeRoom", "TutorialRoom","Menu","Gambling","Game"]
 
     LIVES = 0
     # - Set the starting level - #
@@ -35,4 +35,11 @@ class Globals:
     speed = 5
     laser = 1
     armour = 3
-    drill = 1
+    drill = 2
+
+    current_powerup = "immunity-1"
+
+    diamond_oil = 0
+    gold_oil = 0
+    emerald_oil = 0
+    ruby_oil = 0
