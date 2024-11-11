@@ -149,7 +149,7 @@ class Ship(RoomObject):
         # Adjust the laser creation coordinates to the center of the ship
         if pygame.mouse.get_pressed()[0] and self.can_shoot:
             self.can_shoot = False
-            laser = Laser(self, self.x + self.width/2, self.y + self.height/2, "laser.png", 8, 8, 10, (360-self.curr_rotation)%360, self.damage, self)
+            laser = Laser(self, self.x + self.width/2, self.y + self.height/2, "laser.png", 8, 8, 10+self.speed, (360-self.curr_rotation)%360, self.damage, self)
             self.room.add_room_object(laser)
             self.set_timer(self.shoot_cooldown, self.shot_reset)
         

@@ -8,15 +8,20 @@ from Objects.Asteroid import Asteroid
 from GameFrame import Globals
 from Objects.Wave import Wave
 from Objects.Heart import Heart
-import random
+from Objects.Cuthulu import Cuthulu, Tentacle
+import random, time, pygame
 
 class Game(Level):
     def __init__(self, screen, joysticks):
         Level.__init__(self, screen, joysticks)
         #self.level = level
         self.set_background_image('background.png')
+        self.background_scrolling = True
+        self.background_scroll_speed = 1
 
-        
+        pygame.mixer.init()
+        pygame.mixer.music.load('Sounds\\main_theme.mp3')
+        pygame.mixer.music.play(-1)
         
 
         #self.add_room_object(Unstable(self, 900, 500, 'boom.png', 32, 18, 3, ship, 150, 90,1))
@@ -82,13 +87,44 @@ class Game(Level):
         first_wave = Wave()
         smash_1 = Smash(self, 200, 500, 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, first_wave)
         laser_cruiser_1 = Laser_Cruiser(self, 200, 500, 'laser_cruiser\\laser_cruiser_1.png', 48, 48, 0.75, self.ship, 3, 150, 30,first_wave)
-        first_wave.enemies = [smash_1,laser_cruiser_1]
-        first_wave.total_enemies = [smash_1,laser_cruiser_1]
+        el_goonatar = Laser_Cruiser(self, 200, 500, 'laser_cruiser\\laser_cruiser_1.png', 48*3, 48*3, 0.05, self.ship, 10, 150, 100,first_wave)
+        # first_wave.enemies = [smash_1,laser_cruiser_1]
+        # first_wave.total_enemies = [smash_1,laser_cruiser_1]
+        first_wave.enemies = [el_goonatar]
+        first_wave.total_enemies = [el_goonatar]
         first_wave.interval = 120
         first_wave.room = self
-        first_wave.spawn_next() 
-        self.add_room_object(Asteroid(self,800,random.randint(200,500),1))
-        self.add_room_object(Asteroid(self,800,random.randint(200,500),2))
-        self.add_room_object(Asteroid(self,800,random.randint(200,500),3))
         
+        second_wave = Wave()
+        cuthulu = Cuthulu(self, 200, 500, 26*4, 114*4, 100, 10, 15, 'bosses/cuthulu.png', second_wave)
+        
+        cuthulu.x = Globals.SCREEN_WIDTH - cuthulu.width
+        cuthulu.y = Globals.SCREEN_HEIGHT/2 - cuthulu.height/2
 
+        second_wave.enemies = [cuthulu]
+        second_wave.total_enemies = [cuthulu]
+        second_wave.interval = 120
+        second_wave.room = self
+
+        first_wave.next_wave = second_wave
+
+        second_wave.spawn_next()
+
+        cuthulu.weakspot.x = cuthulu.x + cuthulu.width/2 - cuthulu.weakspot.width/2
+        cuthulu.weakspot.y = cuthulu.y + cuthulu.height/2 - cuthulu.weakspot.height/2
+
+        #first_wave.spawn_next()
+
+        self.set_timer(150, self.spawn_asteroid)
+            
+
+    def spawn_asteroid(self):
+        speed = random.randint(1,5)
+        self.add_room_object(Asteroid(self,800,random.randint(200,500),speed))
+        self.set_timer(150, self.spawn_asteroid)
+
+    def boss_background(self, next_track):
+        pygame.mixer.music.load(f'Sounds\\{next_track}.mp3')
+        pygame.mixer.music.play(-1)
+            
+        

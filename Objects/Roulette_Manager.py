@@ -61,7 +61,7 @@ class Roulette_Manager(RoomObject):
         self.tier = None
     
         # Flag to control movement
-        self.is_gambling = True
+        self.is_gambling = False
         
     def calculate_opacity(self, text):
         distance_from_center = abs(text.y - self.top_threshold - (self.total_range / 2))

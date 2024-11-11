@@ -20,7 +20,7 @@ screen = pygame.display.set_mode(window_size,
                                  pygame.DOUBLEBUF, 32)
 
 Globals.next_level = Globals.start_level
-levels = Globals.levels
+levels = Globals.levels 
 
 # - Main Game Loop. Steps through the levels defined in levels[]
 while Globals.running:
@@ -28,6 +28,7 @@ while Globals.running:
     curr_level = Globals.next_level
     Globals.next_level += 1
     Globals.next_level %= len(levels)
+
     mod_name = f"Rooms.{levels[curr_level]}"
     mod = __import__(mod_name)
     class_name = getattr(mod, levels[curr_level])

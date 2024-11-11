@@ -7,7 +7,7 @@ class Button(RoomObject):
         RoomObject.__init__(self, room, x, y)
         self.pressed = False
         image = self.load_image(image)
-        self.set_image(image, width, height+9)
+        self.set_image(image, width, height)
         
         self.function = function
         #Turns out handle mouse events only works when clicking on the image, no need for hard to code crap!!!

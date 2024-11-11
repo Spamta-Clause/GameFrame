@@ -21,21 +21,24 @@ class Asteroid(RoomObject):
 
         self.register_collision_object("Ship")
 
+        self.size = random.randint(1,3)
+
         self.type_num = random.randint(1,10)
         if self.type_num == 10:
             self.type = "Diamond"
-            self.health = 10
+            self.health = 16
         elif self.type_num >= 7:
             self.type = "Gold"
-            self.health = 7
+            self.health = 8
         elif self.type_num >= 4:
             self.type = "Emerald"
             self.health = 4
         else:
             self.type = "Ruby"
-            self.health = 1
+            self.health = 2
+        self.max_health = self.health
         image = self.load_image(f"{self.type.lower()}_Asteroid.png")
-        self.set_image(image,20,20)
+        self.set_image(image,20*self.size,20*self.size)
             
         
     def step(self):
@@ -69,20 +72,26 @@ class Asteroid(RoomObject):
         if self.health <= 0:
             match self.type:
                 case "Diamond":
-                    Globals.diamond_oil += 2
+                    Globals.diamond_oil += 1
                 case "Gold":
-                    Globals.gold_oil += 2
+                    Globals.gold_oil += 1
                 case "Emerald":
-                    Globals.emerald_oil += 2
+                    Globals.emerald_oil += 1
                 case "Ruby":
-                    Globals.ruby_oil += 2
+                    Globals.ruby_oil += 1
                 #now we want to show a little text box that will fade saying how much oil was collected
-            plus_oil_text = Fading_Text(self.room, self.x, self.y, f"+2 {self.type} Oil", 30, (255,255,255,255))
+            plus_oil_text = Fading_Text(self.room, self.x, self.y, f"+1 {self.type} Oil", 30, (255,255,255,255))
             plus_oil_text.x = self.x - plus_oil_text.width/2
             plus_oil_text.y = self.y - plus_oil_text.height/2
             self.room.add_room_object(plus_oil_text)
-            print(Globals.diamond_oil, Globals.gold_oil, Globals.emerald_oil, Globals.ruby_oil)
-            self.room.delete_object(self)
+
+            self.size -= 1
+            if self.size == 0:
+                self.room.delete_object(self)
+            else:
+                self.health = self.max_health
+                image = self.load_image(f"{self.type.lower()}_Asteroid.png")
+                self.set_image(image,20*self.size,20*self.size)
 
 
     def reset_damage(self):

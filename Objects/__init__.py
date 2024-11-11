@@ -15,3 +15,5 @@ from Objects.Roulette_Manager import Roulette_Manager
 from Objects.Text import Default
 from Objects.Selector import Selector
 from Objects.Heart import Heart
+from Objects.Boss import Boss
+from Objects.Cuthulu import Cuthulu, Tentacle

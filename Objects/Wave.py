@@ -1,6 +1,6 @@
 from GameFrame import RoomObject
 class Wave(RoomObject):
-    def __init__(self, enemies = [], interval = 30, room = None):
+    def __init__(self, enemies = [], interval = 30, room = None, next_wave = None):
         RoomObject.__init__(self,room,0,0)
         self.total_enemies = enemies
         self.enemies = enemies
@@ -9,8 +9,10 @@ class Wave(RoomObject):
         self.room = room
         self.index = 0
         self.enemies_slain = 0
+        self.next_wave = next_wave
 
     def spawn_next(self):
+        print("spawn")
         self.room.add_room_object(self.total_enemies[self.index])
         self.set_timer(self.interval,self.spawn_next)
         self.index += 1
@@ -22,4 +24,7 @@ class Wave(RoomObject):
         self.enemies_slain += 1
 
         if len(self.total_enemies) == self.enemies_slain:
+            if self.next_wave != None:
+                print("spawn next")
+                self.next_wave.spawn_next()
             print('wave killed')

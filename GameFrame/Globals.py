@@ -35,11 +35,11 @@ class Globals:
     speed = 5
     laser = 1
     armour = 3
-    drill = 2
+    drill = 1
 
     current_powerup = "immunity-1"
 
-    diamond_oil = 0
-    gold_oil = 0
-    emerald_oil = 0
-    ruby_oil = 0
+    diamond_oil = 999
+    gold_oil = 999
+    emerald_oil = 999
+    ruby_oil = 999
