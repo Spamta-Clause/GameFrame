@@ -3,3 +3,4 @@ from Rooms.Menu import Menu
 from Rooms.Game import Game
 from Rooms.Gambling import Gambling
 from Rooms.UpgradeRoom import UpgradeRoom
+from Rooms.VictoryRoom import VictoryRoom

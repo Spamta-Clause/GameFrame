@@ -75,6 +75,7 @@ class Game(Level):
             if len(self.hearts) == 0:
                 Globals.next_level = Globals.levels.index('Menu')
                 self.running = False
+                break
 
     def update_hearts(self, type):
         for heart in self.hearts:
@@ -83,44 +84,64 @@ class Game(Level):
         for heart in range(amount):
             self.hearts[heart].set_value('shield')
 
-    def level_one(self):
-        first_wave = Wave()
-        smash_1 = Smash(self, 200, 500, 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, first_wave)
-        laser_cruiser_1 = Laser_Cruiser(self, 200, 500, 'laser_cruiser\\laser_cruiser_1.png', 48, 48, 0.75, self.ship, 3, 150, 30,first_wave)
-        el_goonatar = Laser_Cruiser(self, 200, 500, 'laser_cruiser\\laser_cruiser_1.png', 48*3, 48*3, 0.05, self.ship, 10, 150, 100,first_wave)
-        # first_wave.enemies = [smash_1,laser_cruiser_1]
-        # first_wave.total_enemies = [smash_1,laser_cruiser_1]
-        first_wave.enemies = [el_goonatar]
-        first_wave.total_enemies = [el_goonatar]
-        first_wave.interval = 120
-        first_wave.room = self
-        
-        second_wave = Wave()
-        cuthulu = Cuthulu(self, 200, 500, 26*4, 114*4, 100, 10, 15, 'bosses/cuthulu.png', second_wave)
+    def let_forth_the_great_old_one(self):
+        cuthulu = Cuthulu(self, 200, 500, 26*4, 114*4, 30, 2, 15, 'bosses/cuthulu.png')
         
         cuthulu.x = Globals.SCREEN_WIDTH - cuthulu.width
         cuthulu.y = Globals.SCREEN_HEIGHT/2 - cuthulu.height/2
 
-        second_wave.enemies = [cuthulu]
-        second_wave.total_enemies = [cuthulu]
-        second_wave.interval = 120
-        second_wave.room = self
-
-        first_wave.next_wave = second_wave
-
-        second_wave.spawn_next()
 
         cuthulu.weakspot.x = cuthulu.x + cuthulu.width/2 - cuthulu.weakspot.width/2
         cuthulu.weakspot.y = cuthulu.y + cuthulu.height/2 - cuthulu.weakspot.height/2
 
-        #first_wave.spawn_next()
+        self.add_room_object(cuthulu)
+
+
+    def level_one(self):
+        self.set_timer(30 * 45, self.let_forth_the_great_old_one)
+
+        first_wave = Wave(self)
+        smash_1 = Smash(self, 200, 500, 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, first_wave)
+        first_wave.enemies = [smash_1]
+        first_wave.total_enemies = [smash_1]
+        first_wave.interval = 1
+        
+        second_wave = Wave(self)
+        smash_2 = Smash(self, 200, 500, 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, second_wave)
+        smash_3 = Smash(self, 200, 500, 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, second_wave)
+        unstable_1 = Unstable(self, 200, 500, 'boom.png', 32, 18, 3, self.ship, 150, 90, 1, second_wave)
+        second_wave.enemies = [smash_2, smash_3, unstable_1]
+        second_wave.total_enemies = [smash_2, smash_3, unstable_1]
+        second_wave.interval = 30
+
+        third_wave = Wave(self)
+        laser_cruiser_1 = Laser_Cruiser(self, 200, 500, 'laser_cruiser\\laser_cruiser_1.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, third_wave)
+        smash_4 = Smash(self, 200, 500, 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, third_wave)
+        third_wave.enemies = [laser_cruiser_1, smash_4]
+        third_wave.total_enemies = [laser_cruiser_1, smash_4]
+        third_wave.interval = 45
+
+        fourth_wave = Wave(self)
+        ship_cruiser_1 = Ship_Cruiser(self, 200, 500, 'ship_cruiser.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, fourth_wave)
+        smash_5 = Smash(self, 200, 500, 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, fourth_wave)
+        laser_cruiser_2 = Laser_Cruiser(self, 200, 500, 'laser_cruiser\\laser_cruiser_1.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, fourth_wave)
+        fourth_wave.enemies = [ship_cruiser_1, smash_5, laser_cruiser_2]
+        fourth_wave.total_enemies = [ship_cruiser_1, smash_5, laser_cruiser_2]
+        fourth_wave.interval = 60
+
+        first_wave.next_wave = second_wave
+        second_wave.next_wave = third_wave
+        third_wave.next_wave = fourth_wave
+
+        first_wave.spawn_next()
 
         self.set_timer(150, self.spawn_asteroid)
             
 
     def spawn_asteroid(self):
-        speed = random.randint(1,5)
-        self.add_room_object(Asteroid(self,800,random.randint(200,500),speed))
+        speed = random.choice([1 ,2,2 ,3,3,3 ,4,4 ,5])
+            
+        self.add_room_object(Asteroid(self,Globals.SCREEN_WIDTH,random.randint(0,Globals.SCREEN_WIDTH),speed))
         self.set_timer(150, self.spawn_asteroid)
 
     def boss_background(self, next_track):

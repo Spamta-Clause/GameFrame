@@ -12,8 +12,8 @@ class Ship_Cruiser(Enemy_Base):
         self.spawn_rate = spawn_rate
         self.fire_timer = 0
 
-        smash_ship = Smash(self, self.rect.centerx, self.rect.centery, 'spinny.png', 32, 18, 3, self.target, 1, 1, 20)
-        unstable_ship = Unstable(self, self.rect.centerx, self.rect.centery, 'boom.png', 32, 18, 3, self.target, 150, 90,1)
+        smash_ship = Smash(self, self.rect.centerx, self.rect.centery, 'spinny.png', 32, 18, 3, self.target, 1, 1, 20, None)
+        unstable_ship = Unstable(self, self.rect.centerx, self.rect.centery, 'boom.png', 32, 18, 3, self.target, 150, 90,1,None)
     
     def step(self):
         self.move_to_target()
@@ -36,8 +36,8 @@ class Ship_Cruiser(Enemy_Base):
     
     def fire(self):
         if random.randint(0,1) == 0:
-            new_ship = Smash(self, self.x + self.width/2, self.y + self.height/2, 'spinny.png', 32, 18, 3, self.target, 1, 1, 20)
+            new_ship = Smash(self, self.x + self.width/2, self.y + self.height/2, 'spinny.png', 32, 18, 3, self.target, 1, 1, 20,None)
         else:
-            new_ship = Unstable(self, self.x + self.width/2, self.y + self.height/2, 'boom.png', 32, 18, 3, self.target, 150, 90,1)
+            new_ship = Unstable(self, self.x + self.width/2, self.y + self.height/2, 'boom.png', 32, 18, 3, self.target, 150, 90,1,None)
         self.room.add_room_object(new_ship)
         new_ship.curr_rotation = self.curr_rotation

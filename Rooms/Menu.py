@@ -21,7 +21,7 @@ class Menu(Level):
         self.add_room_object(Button(self, 100, 100, 'play_button.png', 256, 128,self.game_room))
         self.add_room_object(Button(self, 100, 300, 'gamble_button.png', 138*2, 48*2,self.gamble_room))
         self.set_background_image('background.png')
-        self.add_room_object(Button(self, 100, 500, 'back.png', 256, 128, self.upgrade_room))
+        self.add_room_object(Button(self, 100, 500, 'upgrade_button.png', 138*2, 48*2, self.upgrade_room))
     
     def upgrade_room(self):
         Globals.next_level = Globals.levels.index('UpgradeRoom')

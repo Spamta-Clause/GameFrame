@@ -22,7 +22,7 @@ class Level:
         self.background_color = (0, 0, 0)
         self.background_set = False
         self.background_image = 0
-        self.background_y = 0
+        self.background_x = 0
         self.background_scroll_speed = 0
         self.background_scrolling = False
         self.user_events = []
@@ -140,11 +140,11 @@ class Level:
             if self.background_set:
                 # - Scrolling if set - #
                 if self.background_scrolling:
-                    self.background_y += self.background_scroll_speed
-                    if self.background_y >= Globals.SCREEN_HEIGHT:
-                        self.background_y = 0
-                    self.screen.blit(self.background_image, (0, self.background_y))
-                    self.screen.blit(self.background_image, (0, self.background_y - Globals.SCREEN_HEIGHT))
+                    self.background_x += self.background_scroll_speed
+                    if self.background_x >= Globals.SCREEN_WIDTH:
+                        self.background_x = 0
+                    self.screen.blit(self.background_image, (self.background_x,0))
+                    self.screen.blit(self.background_image, (self.background_x - Globals.SCREEN_WIDTH,0))
                 else:
                     self.screen.blit(self.background_image, (0, 0))
             # Call Update on all objects

@@ -2,9 +2,11 @@ from GameFrame import RoomObject
 import pygame
 from GameFrame import Globals
 from Objects.Laser import Laser
+from Objects.Overlay import Overlay
+import pygame
 
 class Ship(RoomObject):
-    def __init__(self, room, x, y, width, height, i_ticks, shoot_cooldown = 15):
+    def __init__(self, room, x, y, width, height, i_ticks, shoot_cooldown = 30):
         RoomObject.__init__(self, room, x, y)
 
         self.damage_multiplier = 1
@@ -149,7 +151,7 @@ class Ship(RoomObject):
         # Adjust the laser creation coordinates to the center of the ship
         if pygame.mouse.get_pressed()[0] and self.can_shoot:
             self.can_shoot = False
-            laser = Laser(self, self.x + self.width/2, self.y + self.height/2, "laser.png", 8, 8, 10+self.speed, (360-self.curr_rotation)%360, self.damage, self)
+            laser = Laser(self, self.x + self.width/2, self.y + self.height/2, "laser.png", 8, 8, 10+self.speed, (360-self.curr_rotation)%360, self.damage, self, False)
             self.room.add_room_object(laser)
             self.set_timer(self.shoot_cooldown, self.shot_reset)
         
@@ -167,9 +169,14 @@ class Ship(RoomObject):
                 self.take_damage(other.damage)
                 self.room.delete_object(other)
 
+    def remove_hurt_overlay(self):
+        self.room.delete_object(self.hurt_overlay)
+
     def take_damage(self, damage):
         print("damaged")
         if self.can_take_damage:
+            self.hurt_overlay = Overlay(self.room, "hurt_overlay.png", 30)
+            pygame.mixer.Sound.play(pygame.mixer.Sound("Sounds/player_hit.wav"))
             rotation = self.curr_rotation
             self.can_take_damage = False
             self.set_timer(self.i_ticks, self.reset_can_take_damage)

@@ -14,7 +14,7 @@ class Roulette_Manager(RoomObject):
         self.total_range = self.bottom_threshold - self.top_threshold
         
         self.speed = 0
-        self.deceleration = 0.0125
+        self.deceleration = 0.025
         
         # List of tier names
         self.tier_names = []

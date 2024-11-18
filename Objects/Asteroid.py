@@ -50,7 +50,6 @@ class Asteroid(RoomObject):
         
     def handle_collision(self, other, other_type):
         if other_type == "Ship" and other.is_drilling and self.can_take_damage:
-            print("getting drilled")
             self.damage(other.drill_damage)
 
 

@@ -2,7 +2,7 @@ from Objects.Enemy_Base import Enemy_Base
 
 class Unstable(Enemy_Base):
     def __init__(self, room, x, y, image, width, height, speed, target, unstable_duration, explosion_size, damage, wave):
-        Enemy_Base.__init__(self, room, x, y, image, width, height, speed, target, False, wave)
+        Enemy_Base.__init__(self, room, x, y, image, width, height, speed, target, False, False, wave)
         
         self.unstable_duration = unstable_duration
         self.explosion_size = explosion_size
@@ -20,6 +20,11 @@ class Unstable(Enemy_Base):
 
     def die(self):
         self.room.delete_object(self)
+        print("died i done got didled")
+        if self.wave != None:
+            self.wave.enemy_dead(self)
+        else:
+            print("no wave")
 
 
     def step(self):
@@ -38,6 +43,7 @@ class Unstable(Enemy_Base):
     def handle_collision(self, other, other_type):
         if not self.is_exploding:
             print("collision")
+            
             self.explode()
         else:
             if other_type != "Laser":

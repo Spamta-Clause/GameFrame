@@ -1,8 +1,9 @@
 from GameFrame import RoomObject
 from GameFrame import Globals
+import pygame
 
 class Laser(RoomObject):
-    def __init__(self, room, x, y, image, width, height, speed, angle, damage, shooter):
+    def __init__(self, room, x, y, image, width, height, speed, angle, damage, shooter, shot_by_enemy = True):
         RoomObject.__init__(self, room, x, y)
         
         self.image = self.load_image(image)
@@ -11,6 +12,11 @@ class Laser(RoomObject):
         self.angle = angle
         self.damage = damage
         self.shooter = shooter
+
+        if shot_by_enemy:
+            pygame.mixer.Sound.play(pygame.mixer.Sound("Sounds/enemy_shoot.wav"))
+        else:
+            pygame.mixer.Sound.play(pygame.mixer.Sound("Sounds/player_shoot.wav"))
     
     def step(self):
         self.set_direction(self.angle, self.speed)

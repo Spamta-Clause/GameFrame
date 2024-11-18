@@ -1,5 +1,5 @@
 from GameFrame import RoomObject, Globals
-import math
+import math, pygame
 
 class Enemy_Base(RoomObject):
     def __init__(self, room, x, y, image, width, height, speed, target, health, too_close_for_comfort = False, wave = None):
@@ -51,7 +51,10 @@ class Enemy_Base(RoomObject):
             self.health -= damage
             if self.health <= 0:
                 self.wave.enemy_dead(self)
+                pygame.mixer.Sound.play(pygame.mixer.Sound("Sounds/explosion.wav"))
                 self.room.delete_object(self)
+            else:
+                pygame.mixer.Sound.play(pygame.mixer.Sound("Sounds/enemy_hit.wav"))
 
     def handle_collision(self, other, other_type):
         if other_type == "Laser":

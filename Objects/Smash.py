@@ -15,7 +15,8 @@ class Smash(Enemy_Base):
         
 
     def handle_collision(self, other, other_type):
-        self.wave.enemy_dead(self)
+        if self.wave != None:
+            self.wave.enemy_dead(self)
         self.room.delete_object(self)
         if other_type == "Ship":
             other.take_damage(self.damage)

@@ -17,3 +17,4 @@ from Objects.Selector import Selector
 from Objects.Heart import Heart
 from Objects.Boss import Boss
 from Objects.Cuthulu import Cuthulu, Tentacle
+from Objects.Overlay import Overlay
