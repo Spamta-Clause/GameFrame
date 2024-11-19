@@ -11,7 +11,7 @@ class Enemy_Base(RoomObject):
         self.speed = speed
         self.target = target
 
-        self.health = health
+        self.health = health * Globals.difficulty
 
         self.register_collision_object("Laser")
         self.register_collision_object("Ship")
@@ -61,20 +61,15 @@ class Enemy_Base(RoomObject):
             if other.shooter != self:
                 self.take_damage(other.damage)
                 self.room.delete_object(other)
-                print("hit")
 
     def step(self):
         #I wonder where I got this code from
         if self.y < 0:
             self.y = 0
-            print("outside")
         elif self.y + self.height> Globals.SCREEN_HEIGHT:
             self.y = Globals.SCREEN_HEIGHT - self.height
-            print("outside")
 
         if self.x < 0:
             self.x = 0
-            print("outside")
         elif self.x + self.width> Globals.SCREEN_WIDTH:
             self.x = Globals.SCREEN_WIDTH - self.width
-            print("outside")

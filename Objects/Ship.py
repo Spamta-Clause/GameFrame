@@ -6,7 +6,7 @@ from Objects.Overlay import Overlay
 import pygame
 
 class Ship(RoomObject):
-    def __init__(self, room, x, y, width, height, i_ticks, shoot_cooldown = 30):
+    def __init__(self, room, x, y, width, height, i_ticks, shoot_cooldown = 10):
         RoomObject.__init__(self, room, x, y)
 
         self.damage_multiplier = 1
@@ -105,17 +105,13 @@ class Ship(RoomObject):
         #I wonder where I got this code from
         if self.y < 0:
             self.y = 0
-            print("outside")
         elif self.y + self.height> Globals.SCREEN_HEIGHT:
             self.y = Globals.SCREEN_HEIGHT - self.height
-            print("outside")
 
         if self.x < 0:
             self.x = 0
-            print("outside")
         elif self.x + self.width> Globals.SCREEN_WIDTH:
             self.x = Globals.SCREEN_WIDTH - self.width
-            print("outside")
 
     def key_pressed(self, key):
         #MOVING FORWARD AND BACKWARD
@@ -173,7 +169,6 @@ class Ship(RoomObject):
         self.room.delete_object(self.hurt_overlay)
 
     def take_damage(self, damage):
-        print("damaged")
         if self.can_take_damage:
             self.hurt_overlay = Overlay(self.room, "hurt_overlay.png", 30)
             pygame.mixer.Sound.play(pygame.mixer.Sound("Sounds/player_hit.wav"))
@@ -184,7 +179,6 @@ class Ship(RoomObject):
                 
             self.room.remove_heart(damage)
 
-            print(self.shield)
             
 
             if self.shield >= 0:
@@ -209,4 +203,5 @@ class Ship(RoomObject):
             if Globals.LIVES <= 0:
                 self.room.delete_object(self)
                 Globals.next_level = Globals.levels.index("Menu")
+                Globals.current_powerup = ""
                 self.room.running = False

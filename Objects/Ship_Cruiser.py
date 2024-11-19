@@ -35,9 +35,6 @@ class Ship_Cruiser(Enemy_Base):
         #could just do it with timer but that'd require another function and i am lazy also just copied this code from the laser cruiser because they're basically the same thing just one shoots ships the other shoot slasers
     
     def fire(self):
-        if random.randint(0,1) == 0:
-            new_ship = Smash(self, self.x + self.width/2, self.y + self.height/2, 'spinny.png', 32, 18, 3, self.target, 1, 1, 20,None)
-        else:
-            new_ship = Unstable(self, self.x + self.width/2, self.y + self.height/2, 'boom.png', 32, 18, 3, self.target, 150, 90,1,None)
+        new_ship = Smash(self, self.x + self.width/2, self.y + self.height/2, 'spinny.png', 32, 18, 3, self.target, 1, 1, 20,None)
         self.room.add_room_object(new_ship)
         new_ship.curr_rotation = self.curr_rotation

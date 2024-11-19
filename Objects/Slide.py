@@ -2,7 +2,7 @@ from Objects.Text import Title
 import pygame
 
 class Slide(Title):
-    def __init__(self, room, x, y, text, name):
+    def __init__(self, room, x, y, text, name, size):
         """
         Intialises the score object
         """         
@@ -10,7 +10,7 @@ class Slide(Title):
         Title.__init__(self, room, x, y, text)
         
         # set values         
-        self.size = 60
+        self.size = size
         self.font = 'Flux Boxes'
         self.colour = (255,255,255,255)
         self.bold = False
@@ -25,7 +25,6 @@ class Slide(Title):
     def key_pressed(self, key):
         if key[pygame.K_SPACE] and self.can_swap:
             self.can_swap = False
-            print(f"space pressed - {self.name}")
             self.room.current_slide += 1
             if self.room.current_slide >= len(self.room.slides):
                 self.room.running = False

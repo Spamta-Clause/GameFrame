@@ -5,7 +5,7 @@ class Boss(RoomObject):
         RoomObject.__init__(self, room, x, y)
         self.image = self.load_image(image)
         self.set_image(self.image, width, height)
-        self.health = health
+        self.health = health * Globals.difficulty
         self.damage_one = damage_one
         self.damage_two = damage_two
 

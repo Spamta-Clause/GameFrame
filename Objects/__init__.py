@@ -16,5 +16,5 @@ from Objects.Text import Default
 from Objects.Selector import Selector
 from Objects.Heart import Heart
 from Objects.Boss import Boss
-from Objects.Cuthulu import Cuthulu, Tentacle
+from Objects.Cuthulu import Fake_Eye, Eye, Maw, Spit, Better_Tentacle
 from Objects.Overlay import Overlay

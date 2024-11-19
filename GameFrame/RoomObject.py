@@ -151,7 +151,7 @@ class RoomObject:
         new_x_speed = math.cos(math.radians(angle)) * speed
         new_y_speed = math.sin(math.radians(angle)) * speed
 
-        return round(new_x_speed), round(new_y_speed)
+        return new_x_speed, new_y_speed
 
     def get_direction_coordinates(self, angle: int, speed: int) -> Tuple[int, int]:
         x, y = 0, 0

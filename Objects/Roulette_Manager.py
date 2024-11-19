@@ -98,8 +98,7 @@ class Roulette_Manager(RoomObject):
                     text.y = rounded_y
                     if text.y == 360:
                         self.tier = text.text
-                
-                print(self.tier)
+
                 match self.tier:
                     case "LVL 1 - Ship Shield":
                         Globals.current_powerup = "shield-1"

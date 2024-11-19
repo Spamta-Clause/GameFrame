@@ -8,7 +8,8 @@ from Objects.Asteroid import Asteroid
 from GameFrame import Globals
 from Objects.Wave import Wave
 from Objects.Heart import Heart
-from Objects.Cuthulu import Cuthulu, Tentacle
+from Objects.Cuthulu import Fake_Eye, Eye, Maw, Spit, Better_Tentacle
+from Objects.Fading_Text import Fading_Text
 import random, time, pygame
 
 class Game(Level):
@@ -27,7 +28,16 @@ class Game(Level):
         #self.add_room_object(Unstable(self, 900, 500, 'boom.png', 32, 18, 3, ship, 150, 90,1))
         #self.add_room_object(Ship_Cruiser(self, 700, 500, 'ship.png', 29*3, 32*3, 0.75, ship, 3, 350, 75))
         self.basic_startup()
-        self.level_one()
+        match Globals.level:
+            case 1:
+                self.level_one()
+            case 2:
+                self.level_two()
+            case 3:
+                self.level_three()
+            case 4:
+                self.level_four()
+        
     
     def basic_startup(self):
         match Globals.current_powerup:
@@ -54,8 +64,10 @@ class Game(Level):
             self.add_room_object(self.shield_hearts[i])
         self.hearts_arrays = [self.hearts, self.shield_hearts]
 
-        self.ship = Ship(self, 100, Globals.SCREEN_HEIGHT/2, 58, 64, 45, 1)
+        self.ship = Ship(self, 100, Globals.SCREEN_HEIGHT/2, 58, 64, 45)
         self.add_room_object(self.ship)
+
+        self.set_timer(150, self.spawn_asteroid)
 
     def remove_heart(self, damage):
         for i in range(damage):
@@ -84,47 +96,65 @@ class Game(Level):
         for heart in range(amount):
             self.hearts[heart].set_value('shield')
 
-    def let_forth_the_great_old_one(self):
-        cuthulu = Cuthulu(self, 200, 500, 26*4, 114*4, 30, 2, 15, 'bosses/cuthulu.png')
+    def let_forth_the_maw(self):
+        maw = Maw(self, 200, 500, 26*3, 115*3, 'bosses\\cuthulu.png', 40)
+        maw.x = Globals.SCREEN_WIDTH - maw.width
+        maw.y = Globals.SCREEN_HEIGHT/2 - maw.height/2
+        self.add_room_object(maw)
+
+        pygame.mixer.music.stop()
+        pygame.mixer.music.load('Sounds\\boss_theme.mp3')
+        pygame.mixer.music.play(-1)
+    
+    def let_forth_the_eyes(self):
+        fake_eye_positions = {
+            1: [0, 180],
+            2: [0, 120, 240],
+            3: [0, 120, 180, 270]
+        }
+
+        for heading in fake_eye_positions.get(Globals.difficulty, []):
+            if heading != 0:
+                fake_eye = Fake_Eye(self, Globals.SCREEN_WIDTH/2, Globals.SCREEN_HEIGHT/2, 32*2, 32*2, 'fake_weakspot.png')
+                self.add_room_object(fake_eye)
+                fake_eye.current_heading = heading
+            else:
+                eye = Eye(self, Globals.SCREEN_WIDTH/2, Globals.SCREEN_HEIGHT/2, 32*2, 32*2, 'bosses\\weakspot.png', 30)
+                self.add_room_object(eye)
+                eye.current_heading = heading
+    
+    def let_forth_the_grasping_tentacles(self):
+        better_tentacle = Better_Tentacle(self, Globals.SCREEN_WIDTH, 0, 476*4, 32*4, 'bosses\\tentacle.png', 50)
+        self.add_room_object(better_tentacle)
         
-        cuthulu.x = Globals.SCREEN_WIDTH - cuthulu.width
-        cuthulu.y = Globals.SCREEN_HEIGHT/2 - cuthulu.height/2
-
-
-        cuthulu.weakspot.x = cuthulu.x + cuthulu.width/2 - cuthulu.weakspot.width/2
-        cuthulu.weakspot.y = cuthulu.y + cuthulu.height/2 - cuthulu.weakspot.height/2
-
-        self.add_room_object(cuthulu)
-
 
     def level_one(self):
-        self.set_timer(30 * 45, self.let_forth_the_great_old_one)
+        self.set_timer(30 * 45, self.let_forth_the_maw)
 
         first_wave = Wave(self)
-        smash_1 = Smash(self, 200, 500, 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, first_wave)
+        smash_1 = Smash(self, 1200, random.randint(120, 600), 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, first_wave)
         first_wave.enemies = [smash_1]
         first_wave.total_enemies = [smash_1]
         first_wave.interval = 1
         
         second_wave = Wave(self)
-        smash_2 = Smash(self, 200, 500, 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, second_wave)
-        smash_3 = Smash(self, 200, 500, 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, second_wave)
-        unstable_1 = Unstable(self, 200, 500, 'boom.png', 32, 18, 3, self.ship, 150, 90, 1, second_wave)
-        second_wave.enemies = [smash_2, smash_3, unstable_1]
-        second_wave.total_enemies = [smash_2, smash_3, unstable_1]
+        smash_2 = Smash(self, 1200, random.randint(120, 600), 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, second_wave)
+        smash_3 = Smash(self, 1200, random.randint(120, 600), 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, second_wave)
+        second_wave.enemies = [smash_2, smash_3]
+        second_wave.total_enemies = [smash_2, smash_3]
         second_wave.interval = 30
 
         third_wave = Wave(self)
-        laser_cruiser_1 = Laser_Cruiser(self, 200, 500, 'laser_cruiser\\laser_cruiser_1.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, third_wave)
-        smash_4 = Smash(self, 200, 500, 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, third_wave)
+        laser_cruiser_1 = Laser_Cruiser(self, 1200, random.randint(120, 600), 'laser_cruiser\\laser_cruiser_1.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, third_wave)
+        smash_4 = Smash(self, 1200, random.randint(120, 600), 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, third_wave)
         third_wave.enemies = [laser_cruiser_1, smash_4]
         third_wave.total_enemies = [laser_cruiser_1, smash_4]
         third_wave.interval = 45
 
         fourth_wave = Wave(self)
-        ship_cruiser_1 = Ship_Cruiser(self, 200, 500, 'ship_cruiser.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, fourth_wave)
-        smash_5 = Smash(self, 200, 500, 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, fourth_wave)
-        laser_cruiser_2 = Laser_Cruiser(self, 200, 500, 'laser_cruiser\\laser_cruiser_1.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, fourth_wave)
+        ship_cruiser_1 = Ship_Cruiser(self, 1200, random.randint(120, 600), 'ship_cruiser.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, fourth_wave)
+        smash_5 = Smash(self, 1200, random.randint(120, 600), 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, fourth_wave)
+        laser_cruiser_2 = Laser_Cruiser(self, 1200, random.randint(120, 600), 'laser_cruiser\\laser_cruiser_1.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, fourth_wave)
         fourth_wave.enemies = [ship_cruiser_1, smash_5, laser_cruiser_2]
         fourth_wave.total_enemies = [ship_cruiser_1, smash_5, laser_cruiser_2]
         fourth_wave.interval = 60
@@ -134,9 +164,137 @@ class Game(Level):
         third_wave.next_wave = fourth_wave
 
         first_wave.spawn_next()
+    
+    def level_two(self):
+        self.set_timer(30 * 45, self.let_forth_the_eyes)
 
-        self.set_timer(150, self.spawn_asteroid)
-            
+        first_wave = Wave(self)
+        smash_1 = Smash(self, 1200, random.randint(120, 600), 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, first_wave)
+        smash_2 = Smash(self, 1200, random.randint(120, 600), 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, first_wave)
+        smash_3 = Smash(self, 1200, random.randint(120, 600), 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, first_wave)
+        first_wave.enemies = [smash_1, smash_2, smash_3]
+        first_wave.total_enemies = [smash_1, smash_2, smash_3]
+        first_wave.interval = 1
+
+        second_wave = Wave(self)
+        smash_4 = Smash(self, 1200, random.randint(120, 600), 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, second_wave)
+        ship_cruiser_1 = Ship_Cruiser(self, 1200, random.randint(120, 600), 'ship_cruiser.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, second_wave)
+        smash_5 = Smash(self, 1200, random.randint(120, 600), 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, second_wave)
+        second_wave.enemies = [smash_4, ship_cruiser_1, smash_5]
+        second_wave.total_enemies = [smash_4, ship_cruiser_1, smash_5]
+        second_wave.interval = 20
+
+        third_wave = Wave(self)
+        ship_cruiser_2 = Ship_Cruiser(self, 1200, random.randint(120, 600), 'ship_cruiser.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, third_wave)
+        smash_6 = Smash(self, 1200, random.randint(120, 600), 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, third_wave)
+        smash_7 = Smash(self, 1200, random.randint(120, 600), 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, third_wave)
+        smash_8 = Smash(self, 1200, random.randint(120, 600), 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, third_wave)
+        laser_cruiser_1 = Laser_Cruiser(self, 1200, random.randint(120, 600), 'laser_cruiser\\laser_cruiser_1.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, third_wave)
+        third_wave.enemies = [ship_cruiser_2, smash_6, smash_7, smash_8, laser_cruiser_1]
+        third_wave.total_enemies = [ship_cruiser_2, smash_6, smash_7, smash_8, laser_cruiser_1]
+        third_wave.interval = 30
+
+        fourth_wave = Wave(self)
+        laser_cruiser_2 = Laser_Cruiser(self, 1200, random.randint(120, 600), 'laser_cruiser\\laser_cruiser_1.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, fourth_wave)
+        laser_cruiser_3 = Laser_Cruiser(self, 1200, random.randint(120, 600), 'laser_cruiser\\laser_cruiser_1.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, fourth_wave)
+        ship_cruiser_3 = Ship_Cruiser(self, 1200, random.randint(120, 600), 'ship_cruiser.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, fourth_wave)
+        ship_cruiser_4 = Ship_Cruiser(self, 1200, random.randint(120, 600), 'ship_cruiser.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, fourth_wave)
+        fourth_wave.enemies = [laser_cruiser_2, laser_cruiser_3, ship_cruiser_3, ship_cruiser_4]
+        fourth_wave.total_enemies = [laser_cruiser_2, laser_cruiser_3, ship_cruiser_3, ship_cruiser_4]
+        fourth_wave.interval = 40
+
+        first_wave.next_wave = second_wave
+        second_wave.next_wave = third_wave
+        third_wave.next_wave = fourth_wave
+
+        first_wave.spawn_next()
+    
+    def level_three(self):
+        self.set_timer(30 * 45, self.let_forth_the_grasping_tentacles)
+
+        first_wave = Wave(self)
+        laser_cruiser_1 = Laser_Cruiser(self, 1200, random.randint(120, 600), 'laser_cruiser\\laser_cruiser_1.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, first_wave)
+        first_wave.enemies = [laser_cruiser_1]
+        first_wave.total_enemies = [laser_cruiser_1]
+        first_wave.interval = 1
+
+        second_wave = Wave(self)
+        laser_cruiser_2 = Laser_Cruiser(self, 1200, random.randint(120, 600), 'laser_cruiser\\laser_cruiser_1.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, second_wave)
+        ship_cruiser_1 = Ship_Cruiser(self, 1200, random.randint(120, 600), 'ship_cruiser.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, second_wave)
+        second_wave.enemies = [laser_cruiser_2, ship_cruiser_1]
+        second_wave.total_enemies = [laser_cruiser_2, ship_cruiser_1]
+        second_wave.interval = 20
+
+        third_wave = Wave(self)
+        laser_cruiser_3 = Laser_Cruiser(self, 1200, random.randint(120, 600), 'laser_cruiser\\laser_cruiser_1.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, third_wave)
+        laser_cruiser_4 = Laser_Cruiser(self, 1200, random.randint(120, 600), 'laser_cruiser\\laser_cruiser_1.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, third_wave)
+        laser_cruiser_5 = Laser_Cruiser(self, 1200, random.randint(120, 600), 'laser_cruiser\\laser_cruiser_1.png', 29*3, 32*3, 0.75, self.ship, 3, 350, 75, third_wave)
+        smash_1 = Smash(self, 1200, random.randint(120, 600), 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, third_wave)
+        smash_2 = Smash(self, 1200, random.randint(120, 600), 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, third_wave)
+        smash_3 = Smash(self, 1200, random.randint(120, 600), 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, third_wave)
+        smash_4 = Smash(self, 1200, random.randint(120, 600), 'spinny.png', 32, 18, 3, self.ship, 1, 1, 20, third_wave)
+        third_wave.enemies = [laser_cruiser_3, laser_cruiser_4, laser_cruiser_5, smash_1, smash_2, smash_3, smash_4]
+        third_wave.total_enemies = [laser_cruiser_3, laser_cruiser_4, laser_cruiser_5, smash_1, smash_2, smash_3, smash_4]
+        third_wave.interval = 30
+
+        first_wave.next_wave = second_wave
+        second_wave.next_wave = third_wave
+
+        first_wave.spawn_next()
+    
+    def text_one(self):
+        fading_text = Fading_Text(self, Globals.SCREEN_WIDTH/2, Globals.SCREEN_HEIGHT/2, 'Prepare for the final battle!', 60, (255,255,255,255))
+        fading_text.x = Globals.SCREEN_WIDTH/2 - fading_text.width/2
+        fading_text.y = Globals.SCREEN_HEIGHT/2 - fading_text.height/2
+        self.add_room_object(fading_text)
+
+    def text_two(self):
+        fading_text = Fading_Text(self, Globals.SCREEN_WIDTH/2, Globals.SCREEN_HEIGHT/2, 'It will be hard.', 60, (255,255,255,255))
+        fading_text.x = Globals.SCREEN_WIDTH/2 - fading_text.width/2
+        fading_text.y = Globals.SCREEN_HEIGHT/2 - fading_text.height/2
+        self.add_room_object(fading_text)
+
+    def text_three(self):
+        fading_text = Fading_Text(self, Globals.SCREEN_WIDTH/2, Globals.SCREEN_HEIGHT/2, 'Maybe even impossible.', 60, (255,255,255,255))
+        fading_text.x = Globals.SCREEN_WIDTH/2 - fading_text.width/2
+        fading_text.y = Globals.SCREEN_HEIGHT/2 - fading_text.height/2
+        self.add_room_object(fading_text)
+    
+
+        
+
+    def level_four(self):
+        self.set_timer(0, self.text_one)
+        self.set_timer(60, self.text_two)
+        self.set_timer(120, self.text_three)
+
+        self.amalgamation_amount = 3
+        better_tentacle = Better_Tentacle(self, Globals.SCREEN_WIDTH, 0, 476*4, 32*4, 'bosses\\tentacle.png', 5, True)
+        self.add_room_object(better_tentacle)
+        
+        maw = Maw(self, 200, 500, 26*3, 115*3, 'bosses\\cuthulu.png', 10, True)
+        maw.x = Globals.SCREEN_WIDTH - maw.width
+        maw.y = Globals.SCREEN_HEIGHT/2 - maw.height/2
+        self.add_room_object(maw)
+
+        fake_eye_positions = {
+            1: [0, 180],
+            2: [0, 120, 240],
+            3: [0, 90, 180, 270]
+        }
+        eye = Eye(self, Globals.SCREEN_WIDTH/2, Globals.SCREEN_HEIGHT/2, 32*2, 32*2, 'bosses\\weakspot.png', 1, True)
+        self.add_room_object(eye)
+        eye.current_heading = 0
+
+
+        for heading in fake_eye_positions.get(Globals.difficulty, []):
+            if heading != 0:
+                fake_eye = Fake_Eye(self, Globals.SCREEN_WIDTH/2, Globals.SCREEN_HEIGHT/2, 32*2, 32*2, 'fake_weakspot.png')
+                self.add_room_object(fake_eye)
+                fake_eye.current_heading = heading
+                eye.fake_eyes.append(fake_eye)
+                
+
 
     def spawn_asteroid(self):
         speed = random.choice([1 ,2,2 ,3,3,3 ,4,4 ,5])
@@ -144,8 +302,3 @@ class Game(Level):
         self.add_room_object(Asteroid(self,Globals.SCREEN_WIDTH,random.randint(0,Globals.SCREEN_WIDTH),speed))
         self.set_timer(150, self.spawn_asteroid)
 
-    def boss_background(self, next_track):
-        pygame.mixer.music.load(f'Sounds\\{next_track}.mp3')
-        pygame.mixer.music.play(-1)
-            
-        

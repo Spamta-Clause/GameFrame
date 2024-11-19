@@ -12,19 +12,18 @@ class Unstable(Enemy_Base):
         self.set_timer(unstable_duration, self.explode)
     
     def explode(self):
-        print('boom')
+        print("exploding")
         self.is_exploding = True
         self.width = self.explosion_size
         self.height = self.explosion_size
-        self.set_timer(10, self.die)
+        self.set_timer(5, self.die)
 
     def die(self):
+        print("die")
         self.room.delete_object(self)
-        print("died i done got didled")
         if self.wave != None:
             self.wave.enemy_dead(self)
-        else:
-            print("no wave")
+
 
 
     def step(self):
@@ -42,8 +41,6 @@ class Unstable(Enemy_Base):
         
     def handle_collision(self, other, other_type):
         if not self.is_exploding:
-            print("collision")
-            
             self.explode()
         else:
             if other_type != "Laser":

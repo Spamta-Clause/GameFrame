@@ -9,12 +9,10 @@ class Overlay(RoomObject):
         self.length = length
         self.room = room
         self.room.add_room_object(self)
-        print("created")
         self.alpha = 100
         self.fade_speed = (self.alpha / self.length)
 
     def step(self):
-        print(self.alpha)
         if self.alpha > 0:
             self.alpha -= self.fade_speed
             self.image.set_alpha(self.alpha)
@@ -23,4 +21,3 @@ class Overlay(RoomObject):
 
     def destroy_overlay(self):
         self.room.delete_object(self)
-        print("destroyed")

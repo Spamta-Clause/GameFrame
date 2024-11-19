@@ -7,7 +7,7 @@ class Globals:
     SCREEN_HEIGHT = 720
 
     # - Set the Window display name - #
-    window_name = 'Galactic Oil Harvesters'
+    window_name = 'Aspects of Cuthulu'
 
     # - Set the order of the rooms - #
     levels = ["TutorialRoom","Menu","Gambling","Game","VictoryRoom","UpgradeRoom"]
@@ -42,3 +42,8 @@ class Globals:
     gold_oil = 0
     emerald_oil = 0
     ruby_oil = 0
+
+    difficulty = 3
+
+    level = 4
+    max_level = 4 
